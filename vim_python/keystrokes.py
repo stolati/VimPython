@@ -7,6 +7,8 @@ class KeyStroke(Enum):
   UP_1 = 'k'
   RIGHT_1 = 'l'
   DELETE_CHAR_AT_POS = 'x'
+  END_OF_LINE = '$'
+  BEGINNING_OF_LINE = '0'
 
   ENTER = '\<CR>'
   ESCAPE = '\<ESC>'

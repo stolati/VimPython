@@ -45,4 +45,5 @@ class VimTester(unittest.TestCase):
     self.assertEqual(expected, actual, deepdiff.DeepDiff(expected, actual))
   
   def assert_random(allowed_commands, number_loop=1000, size_commands=10):
+    # TODO : we need some randomization tests, othewise they are going to be corner cases
     pass

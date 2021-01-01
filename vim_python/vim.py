@@ -10,7 +10,7 @@ class VimPython:
     vb.key_strokes(actions)
     return vb.to_dict()
 
-  def __init__(self, buffer):
+  def __init__(self, buffer = ''):
     self._mode = 'NORMAL'
     self._buffer_lines = [list(l) for l in buffer.split('\n')]
     # Cursor info
@@ -36,6 +36,12 @@ class VimPython:
       'search': '',
     }
   
+  def get_buffer(self):
+    return '\n'.join([''.join(l) for l in self._buffer_lines])
+
+  def get_cursor_pos(self):
+    return (self._col -1 , self._lnum-1)
+  
   def show_state(self):
     pprint.pprint(self.to_dict())
 
@@ -47,6 +53,7 @@ class VimPython:
   def key_stroke(self, key):
     self._executed_commands.append(key)
     command = keystrokes.KEYSTROKE_REVERSE[key]
+    
     if command == 'LEFT_1':
       self._move_left()
     elif command == 'DOWN_1':
@@ -57,6 +64,10 @@ class VimPython:
       self._move_right()
     elif command == 'DELETE_CHAR_AT_POS':
       self._delete_char_at_pos()
+    elif command == 'END_OF_LINE':
+      self._end_of_line()
+    elif command == 'BEGINNING_OF_LINE':
+      self._beginning_of_line()
     else:
       raise NotImplementedError(f'{key} => {command}')
   
@@ -70,14 +81,14 @@ class VimPython:
       return
     self._lnum += 1
 
-    self._col = min(self._cursor_want, self._cur_line_len+1)
+    self._col = min(self._cursor_want, self._cur_line_len)
  
   def _move_up(self):
     if self._lnum == 1:
       return
     self._lnum -= 1
 
-    self._col = min(self._cursor_want, self._cur_line_len+1)
+    self._col = min(self._cursor_want, self._cur_line_len)
   
   def _move_right(self):
     if self._col >= self._cur_line_len:
@@ -92,5 +103,12 @@ class VimPython:
     self._cursor_want = self._col
   
   def _delete_char_at_pos():
-    self._buffer_paste = self._buffer_lines[self._pos_y].pop(self._pos_x)
+    pass
 
+  def _end_of_line(self):
+    self._col = self._cur_line_len
+    self._cursor_want = 2147483647 # Extracted from vim
+
+  def _beginning_of_line(self):
+    self._col = 1
+    self._cursor_want = 1
