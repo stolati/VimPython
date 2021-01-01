@@ -41,7 +41,7 @@ class VimPython:
 
   def __init__(self, buffer = ''):
     self._mode = 'NORMAL'
-    self._buffer_lines = [list(l) for l in buffer.split('\n')]
+    self._buffer_lines = buffer.split('\n')
 
     self._cursor = CursorData.default()
 
@@ -52,7 +52,7 @@ class VimPython:
 
   def to_dict(self):
     return {
-      'output' : [''.join(l) for l in self._buffer_lines],
+      'output' : list(self._buffer_lines),
       'paste' : self._buffer_paste,
       'command' : ''.join(self._executed_commands),
       'cursor' : self._cursor.to_json(),
@@ -138,7 +138,9 @@ class VimPython:
     if line_len == 0:
       self._cursor = self._cursor.to_new(want=1)    
       return
-    self._buffer_paste = line.pop(self._cursor.col-1)
+    self._buffer_paste = line[self._cursor.col-1]
+    new_line = line[0:self._cursor.col-1] + line[self._cursor.col:]
+    self._buffer_lines[self._cursor.lnum-1] = new_line
     new_col = min(self._cursor.want, self._get_line_len())
     self._cursor = self._cursor.to_new(
       col = new_col,
