@@ -1,0 +1,34 @@
+[[package]]
+category = "main"
+description = "Deep Difference and Search of any Python object/data."
+name = "deepdiff"
+optional = false
+python-versions = ">=3.5"
+version = "5.0.2"
+
+[package.dependencies]
+ordered-set = ">=4.0.1"
+
+[package.extras]
+murmur = ["mmh3"]
+
+[[package]]
+category = "main"
+description = "A set that remembers its order, and allows looking up its items by their index in that order."
+name = "ordered-set"
+optional = false
+python-versions = ">=3.5"
+version = "4.0.2"
+
+[metadata]
+content-hash = "67760bd2f626f812b4bc9571e4ff217f24124a3c3ede41c56a43aa062c4a761b"
+python-versions = "^3.8"
+
+[metadata.files]
+deepdiff = [
+    {file = "deepdiff-5.0.2-py3-none-any.whl", hash = "sha256:273b18d32bb9b956548290b2e3ddf79c515def2dd5738965f4348ae813e710c5"},
+    {file = "deepdiff-5.0.2.tar.gz", hash = "sha256:e2b74af4da0ef9cd338bb6e8c97242c1ec9d81fcb28298d7bb24acdc19ea79d7"},
+]
+ordered-set = [
+    {file = "ordered-set-4.0.2.tar.gz", hash = "sha256:ba93b2df055bca202116ec44b9bead3df33ea63a7d5827ff8e16738b97f33a95"},
+]
