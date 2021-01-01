@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from vim_python.test_data import test_helper
 
@@ -14,7 +15,9 @@ class TestMoving(test_helper.VimTester):
       self.assert_correct('$j')
       self.assert_correct('$hjj')
       self.assert_correct('$hl0hj00jh')
+      self.assert_correct('$lll')
 
+    @test_helper.skip_random
     def test_random(self):
       self.assert_random('hjkl$0')
 

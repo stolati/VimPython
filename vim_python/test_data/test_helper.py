@@ -2,6 +2,7 @@ import unittest
 from pathlib import Path
 import json
 import random
+import os
 
 import deepdiff
 from progress.bar import Bar
@@ -17,6 +18,11 @@ LORUM = (
   ' \n'
   'vitae mi non orci ultricies' # TODO add newline there
 )
+
+skip_random = unittest.skipUnless(
+  os.environ.get('WITH_RANDOM'),
+  "Random too big for regular tests."
+  )
 
 class VimTester(unittest.TestCase):
 

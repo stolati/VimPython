@@ -29,7 +29,7 @@ class CursorData(namedtuple('CursorData', ['col', 'lnum', 'want'])):
     lnum = self.lnum if lnum is None else lnum
     want = self.want if want is None else want
     return CursorData(col, lnum, want)
-  
+
 
 class VimPython:
 
@@ -79,10 +79,12 @@ class VimPython:
     method = getattr(self, f'_command_{command.lower()}')
     method()
   
-  def _get_line_len(self, lnum=None):
-    if lnum == None:
-      lnum = self._cursor.lnum
-    return max(len(self._buffer_lines[lnum-1]), 1)
+  def _get_line_len(self, lnum=None, min_1=True):
+    lnum = self._cursor.lnum if lnum is None else lnum
+    line_len = len(self._buffer_lines[lnum-1])
+    if min_1:
+      line_len = max(line_len, 1)
+    return line_len
   
   def _command_move_down_1(self): # j
     new_lnum = self._cursor.lnum + 1
@@ -129,3 +131,20 @@ class VimPython:
 
   def _command_move_beginning_of_line(self):
     self._cursor = self._cursor.to_new(col=1, want=1)
+
+  def _command_delete_char_at_pos(self):
+    line = self._buffer_lines[self._cursor.lnum-1]
+    line_len = len(line)
+    if line_len == 0:
+      self._cursor = self._cursor.to_new(want=1)    
+      return
+    self._buffer_paste = line.pop(self._cursor.col-1)
+    new_col = min(self._cursor.want, self._get_line_len())
+    self._cursor = self._cursor.to_new(
+      col = new_col,
+      want = new_col,
+    )    
+
+
+
+    

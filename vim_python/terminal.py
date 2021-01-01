@@ -38,7 +38,7 @@ class VimTerminal:
       k = stdscr.getkey()
       if k in 'Zz':
         break
-      if k in 'hjkl$0':
+      if k in 'hjkl$0x':
         self._vim.key_stroke(k)
 
 

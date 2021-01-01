@@ -1,6 +1,8 @@
 
 
 function! ExecuteAndSave(input_file, command_file)
+  call CleanRegisters()
+
   let input_content = readfile(a:input_file)
   let cmd = join(readfile(a:command_file), '\n')
 
@@ -30,8 +32,15 @@ function! ExecuteAndSave(input_file, command_file)
   call writefile([json_output], 'output.json')
 
   quitall!
-
 endfunction
+
+function! CleanRegisters()
+  let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
+  for r in regs
+    call setreg(r, [])
+  endfor
+endfunction
+
 
 function! GetCurPosDict()
   let [bufnum, lnum, col, off, curswant] = getcurpos()
@@ -49,3 +58,4 @@ endfunction
 " https://stackoverflow.com/questions/11074440/how-to-iterate-through-the-registers-in-my-vimscript
 
 " More registers :reg
+# https://www.brianstorti.com/vim-registers/
