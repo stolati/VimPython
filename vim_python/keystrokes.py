@@ -2,13 +2,13 @@ from enum import Enum, unique
 
 @unique
 class KeyStroke(Enum):
-  LEFT_1 = 'h'
-  DOWN_1 = 'j'
-  UP_1 = 'k'
-  RIGHT_1 = 'l'
+  MOVE_LEFT_1 = 'h'
+  MOVE_DOWN_1 = 'j'
+  MOVE_UP_1 = 'k'
+  MOVE_RIGHT_1 = 'l'
   DELETE_CHAR_AT_POS = 'x'
-  END_OF_LINE = '$'
-  BEGINNING_OF_LINE = '0'
+  MOVE_END_OF_LINE = '$'
+  MOVE_BEGINNING_OF_LINE = '0'
 
   ENTER = '\<CR>'
   ESCAPE = '\<ESC>'

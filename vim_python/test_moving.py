@@ -1,5 +1,6 @@
 import unittest
-from test_data import test_helper
+
+from vim_python.test_data import test_helper
 
 class TestMoving(test_helper.VimTester):
 
@@ -14,7 +15,6 @@ class TestMoving(test_helper.VimTester):
       self.assert_correct('$hjj')
       self.assert_correct('$hl0hj00jh')
 
-    @unittest.skip("random long tests")
     def test_random(self):
       self.assert_random('hjkl$0')
 

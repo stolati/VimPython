@@ -1,12 +1,13 @@
-from vim_exe import vim_exe
-import vim
 import unittest
 from pathlib import Path
 import json
-import deepdiff
 import random
+
+import deepdiff
 from progress.bar import Bar
 
+from vim_python import vim
+from vim_python.vim_exe import vim_exe
 
 LORUM = (
   'Lorem ipsum dolor sit amet\n'

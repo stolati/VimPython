@@ -1,6 +1,35 @@
-
 import pprint
-import keystrokes
+from collections import namedtuple
+
+from vim_python import keystrokes
+
+class CursorData(namedtuple('CursorData', ['col', 'lnum', 'want'])):
+
+  END_OF_LINE_MAX = 2147483647
+
+  @classmethod
+  def default(cls):
+    return cls(1, 1, 1)
+
+  def to_json(self):
+    return {
+      'bufnum': 0, # buffers not handled yet
+      'col': self.col,
+      'lnum': self.lnum,
+      'curswant': self.want,
+      'off': 0, # I don't understand what it's for
+    }
+  
+  def get_cursor_pos(self):
+    # TODO : change to avoid -1 here, the terminal should do it
+    return (self.col -1 , self.lnum-1)
+  
+  def to_new(self, col=None, lnum=None, want=None):
+    col = self.col if col is None else col
+    lnum = self.lnum if lnum is None else lnum
+    want = self.want if want is None else want
+    return CursorData(col, lnum, want)
+  
 
 class VimPython:
 
@@ -13,26 +42,20 @@ class VimPython:
   def __init__(self, buffer = ''):
     self._mode = 'NORMAL'
     self._buffer_lines = [list(l) for l in buffer.split('\n')]
-    # Cursor info
-    self._col = 1
-    self._lnum = 1
-    self._cursor_want = 1
+
+    self._cursor = CursorData.default()
 
     self._buffer_paste = ''
     self._executed_commands = []
+
+    self._current_command = []
 
   def to_dict(self):
     return {
       'output' : [''.join(l) for l in self._buffer_lines],
       'paste' : self._buffer_paste,
       'command' : ''.join(self._executed_commands),
-      'cursor' : {
-        'bufnum': 0, # buffers not handled yet
-        'col': self._col,
-        'lnum': self._lnum,
-        'curswant': self._cursor_want,
-        'off': 0, # I don't understand what it's for
-      },
+      'cursor' : self._cursor.to_json(),
       'search': '',
     }
   
@@ -40,7 +63,7 @@ class VimPython:
     return '\n'.join([''.join(l) for l in self._buffer_lines])
 
   def get_cursor_pos(self):
-    return (self._col -1 , self._lnum-1)
+    return self._cursor.get_cursor_pos()
   
   def show_state(self):
     pprint.pprint(self.to_dict())
@@ -53,62 +76,56 @@ class VimPython:
   def key_stroke(self, key):
     self._executed_commands.append(key)
     command = keystrokes.KEYSTROKE_REVERSE[key]
-    
-    if command == 'LEFT_1':
-      self._move_left()
-    elif command == 'DOWN_1':
-      self._move_down()
-    elif command == 'UP_1':
-      self._move_up()
-    elif command == 'RIGHT_1':
-      self._move_right()
-    elif command == 'DELETE_CHAR_AT_POS':
-      self._delete_char_at_pos()
-    elif command == 'END_OF_LINE':
-      self._end_of_line()
-    elif command == 'BEGINNING_OF_LINE':
-      self._beginning_of_line()
-    else:
-      raise NotImplementedError(f'{key} => {command}')
+    method = getattr(self, f'_command_{command.lower()}')
+    method()
   
-  @property
-  def _cur_line_len(self):
-    return max(len(self._buffer_lines[self._lnum-1]), 1)
+  def _get_line_len(self, lnum=None):
+    if lnum == None:
+      lnum = self._cursor.lnum
+    return max(len(self._buffer_lines[lnum-1]), 1)
   
-  def _move_down(self):
+  def _command_move_down_1(self): # j
+    new_lnum = self._cursor.lnum + 1
     # Going over the number of lines
-    if self._lnum >=len(self._buffer_lines):
+    if new_lnum > len(self._buffer_lines):
       return
-    self._lnum += 1
-
-    self._col = min(self._cursor_want, self._cur_line_len)
+    self._cursor = self._cursor.to_new(
+      lnum = new_lnum,
+      col = min(self._cursor.want, self._get_line_len(new_lnum)),
+    )
  
-  def _move_up(self):
-    if self._lnum == 1:
+  def _command_move_up_1(self): # k
+    new_lnum = self._cursor.lnum - 1
+    if new_lnum == 0:
       return
-    self._lnum -= 1
-
-    self._col = min(self._cursor_want, self._cur_line_len)
+    self._cursor = self._cursor.to_new(
+      lnum = new_lnum,
+      col = min(self._cursor.want, self._get_line_len(new_lnum)),
+    )
   
-  def _move_right(self):
-    if self._col >= self._cur_line_len:
+  def _command_move_right_1(self): # l
+    new_col = self._cursor.col + 1
+    if new_col > self._get_line_len():
       return
-    self._col += 1 
-    self._cursor_want = self._col
+    self._cursor = self._cursor.to_new(
+      col= new_col,
+      want = new_col,
+    )
 
-  def _move_left(self):
-    if self._col == 1:
+  def _command_move_left_1(self): # h
+    new_col = self._cursor.col - 1
+    if new_col == 0:
       return
-    self._col -= 1 
-    self._cursor_want = self._col
-  
-  def _delete_char_at_pos():
-    pass
+    self._cursor = self._cursor.to_new(
+      col= new_col,
+      want = new_col,
+    )
 
-  def _end_of_line(self):
-    self._col = self._cur_line_len
-    self._cursor_want = 2147483647 # Extracted from vim
+  def _command_move_end_of_line(self): # $
+    self._cursor = self._cursor.to_new(
+      col=self._get_line_len(),
+      want=CursorData.END_OF_LINE_MAX,
+    )
 
-  def _beginning_of_line(self):
-    self._col = 1
-    self._cursor_want = 1
+  def _command_move_beginning_of_line(self):
+    self._cursor = self._cursor.to_new(col=1, want=1)

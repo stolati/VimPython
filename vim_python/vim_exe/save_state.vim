@@ -48,3 +48,4 @@ endfunction
 " To get all the registers : 
 " https://stackoverflow.com/questions/11074440/how-to-iterate-through-the-registers-in-my-vimscript
 
+" More registers :reg

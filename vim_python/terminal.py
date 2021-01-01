@@ -2,8 +2,9 @@
 # Launch the vim in terminal mode, like the vim
 # So we can test if it's the correct usage.
 from curses import wrapper
-import vim
 import textwrap
+
+from vim_python import vim
 
 class VimTerminal:
 
