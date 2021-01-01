@@ -34,5 +34,4 @@ class VimExe:
 
       output_content = output_path.read_text()
       json_res = json.loads(output_content)
-      print(f'returning {repr(json_res)}')
       return json_res

@@ -4,11 +4,16 @@ import unittest
 from pathlib import Path
 import json
 import deepdiff
+import random
+from progress.bar import Bar
+
 
 LORUM = (
   'Lorem ipsum dolor sit amet\n'
   'Curabitur sapien neque\n'
+  '\n'
   'id nisl. Fusce id diam id\n'
+  ' \n'
   'vitae mi non orci ultricies' # TODO add newline there
 )
 
@@ -32,10 +37,11 @@ class VimTester(unittest.TestCase):
     cls._get_test_path().write_text(
       json.dumps(saved_data, sort_keys=True, indent=4))
 
-  def assert_correct(self, command, auto_save=True):
-    print('testing correctness')
+  def assert_correct(self, command, auto_save=True, force_vim_exe=False):
     actual = vim.VimPython.act(LORUM, command)
-    expected = self._read_saved_data().get(command)
+    expected = None
+    if not force_vim_exe:
+      expected = self._read_saved_data().get(command)
 
     if not expected:
       expected = vim_exe.VimExe.act(LORUM, command)
@@ -44,6 +50,11 @@ class VimTester(unittest.TestCase):
     
     self.assertEqual(expected, actual, deepdiff.DeepDiff(expected, actual))
   
-  def assert_random(allowed_commands, number_loop=1000, size_commands=10):
-    # TODO : we need some randomization tests, othewise they are going to be corner cases
-    pass
+  def assert_random(self, allowed_commands, number_loop=1000, size_commands=10):
+    random.seed()
+    bar = Bar('Testing random sequences', max=number_loop)
+    for _ in range(number_loop):
+      command = random.choices(allowed_commands, k=size_commands)
+      self.assert_correct(''.join(command), auto_save=False, force_vim_exe=True)
+      bar.next()
+    bar.finish()

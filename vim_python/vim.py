@@ -73,7 +73,7 @@ class VimPython:
   
   @property
   def _cur_line_len(self):
-    return len(self._buffer_lines[self._lnum-1])
+    return max(len(self._buffer_lines[self._lnum-1]), 1)
   
   def _move_down(self):
     # Going over the number of lines

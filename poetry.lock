@@ -20,8 +20,16 @@ optional = false
 python-versions = ">=3.5"
 version = "4.0.2"
 
+[[package]]
+category = "main"
+description = "Easy to use progress bars"
+name = "progress"
+optional = false
+python-versions = "*"
+version = "1.5"
+
 [metadata]
-content-hash = "67760bd2f626f812b4bc9571e4ff217f24124a3c3ede41c56a43aa062c4a761b"
+content-hash = "0b731bbe62299468b41838246bb31f6454814e300612d1003d01e506f5e09dc9"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -31,4 +39,7 @@ deepdiff = [
 ]
 ordered-set = [
     {file = "ordered-set-4.0.2.tar.gz", hash = "sha256:ba93b2df055bca202116ec44b9bead3df33ea63a7d5827ff8e16738b97f33a95"},
+]
+progress = [
+    {file = "progress-1.5.tar.gz", hash = "sha256:69ecedd1d1bbe71bf6313d88d1e6c4d2957b7f1d4f71312c211257f7dae64372"},
 ]

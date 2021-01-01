@@ -1,4 +1,104 @@
 {
+    "$": {
+        "command": "$",
+        "cursor": {
+            "bufnum": 0,
+            "col": 26,
+            "curswant": 2147483647,
+            "lnum": 1,
+            "off": 0
+        },
+        "output": [
+            "Lorem ipsum dolor sit amet",
+            "Curabitur sapien neque",
+            "",
+            "id nisl. Fusce id diam id",
+            " ",
+            "vitae mi non orci ultricies"
+        ],
+        "paste": "",
+        "search": ""
+    },
+    "$hjj": {
+        "command": "$hjj",
+        "cursor": {
+            "bufnum": 0,
+            "col": 1,
+            "curswant": 25,
+            "lnum": 3,
+            "off": 0
+        },
+        "output": [
+            "Lorem ipsum dolor sit amet",
+            "Curabitur sapien neque",
+            "",
+            "id nisl. Fusce id diam id",
+            " ",
+            "vitae mi non orci ultricies"
+        ],
+        "paste": "",
+        "search": ""
+    },
+    "$hl0hj00jh": {
+        "command": "$hl0hj00jh",
+        "cursor": {
+            "bufnum": 0,
+            "col": 1,
+            "curswant": 1,
+            "lnum": 3,
+            "off": 0
+        },
+        "output": [
+            "Lorem ipsum dolor sit amet",
+            "Curabitur sapien neque",
+            "",
+            "id nisl. Fusce id diam id",
+            " ",
+            "vitae mi non orci ultricies"
+        ],
+        "paste": "",
+        "search": ""
+    },
+    "$j": {
+        "command": "$j",
+        "cursor": {
+            "bufnum": 0,
+            "col": 22,
+            "curswant": 2147483647,
+            "lnum": 2,
+            "off": 0
+        },
+        "output": [
+            "Lorem ipsum dolor sit amet",
+            "Curabitur sapien neque",
+            "",
+            "id nisl. Fusce id diam id",
+            " ",
+            "vitae mi non orci ultricies"
+        ],
+        "paste": "",
+        "search": ""
+    },
+    "0": {
+        "command": "0",
+        "cursor": {
+            "bufnum": 0,
+            "col": 1,
+            "curswant": 1,
+            "lnum": 1,
+            "off": 0
+        },
+        "output": [
+            "Lorem ipsum dolor sit amet",
+            "Curabitur sapien neque",
+            "",
+            "id nisl. Fusce id diam id",
+            " ",
+            "vitae mi non orci ultricies"
+        ],
+        "paste": "",
+        "search": ""
+    },
     "h": {
         "command": "h",
         "cursor": {
@@ -11,7 +111,9 @@
         "output": [
             "Lorem ipsum dolor sit amet",
             "Curabitur sapien neque",
+            "",
             "id nisl. Fusce id diam id",
+            " ",
             "vitae mi non orci ultricies"
         ],
         "paste": "",
@@ -29,7 +131,9 @@
         "output": [
             "Lorem ipsum dolor sit amet",
             "Curabitur sapien neque",
+            "",
             "id nisl. Fusce id diam id",
+            " ",
             "vitae mi non orci ultricies"
         ],
         "paste": "",
@@ -47,7 +151,9 @@
         "output": [
             "Lorem ipsum dolor sit amet",
             "Curabitur sapien neque",
+            "",
             "id nisl. Fusce id diam id",
+            " ",
             "vitae mi non orci ultricies"
         ],
         "paste": "",
@@ -65,7 +171,9 @@
         "output": [
             "Lorem ipsum dolor sit amet",
             "Curabitur sapien neque",
+            "",
             "id nisl. Fusce id diam id",
+            " ",
             "vitae mi non orci ultricies"
         ],
         "paste": "",
